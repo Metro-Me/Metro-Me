@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "111342127859",
+    "project_id": "metro-me-c9587",
+    "storage_bucket": "metro-me-c9587.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111342127859:android:1ab57b33d1f40662530586",
+        "android_client_info": {
+          "package_name": "com.zephyrus.metrome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111342127859-dcr0dofd4th7hqd42nvs4o53sl9avkd9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrmrBeb8mSYXR17PItbql_PBN3nou_-Ug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111342127859-dcr0dofd4th7hqd42nvs4o53sl9avkd9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

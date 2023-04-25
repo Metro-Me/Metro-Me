@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:metrome/screens/closest_metro.dart';
 import 'package:metrome/screens/home.dart';
 import 'package:metrome/screens/metro_updates.dart';
-import 'package:metrome/compnents/custom_drawer.dart';
 import '../screens/lost_and_found.dart';
+import '../screens/ContactUsPage.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../screens/AboutUsPage.dart';
+import '../screens/ServiceStatusPage.dart';
 
-final List<String> _stations = [
+const List<String> _stations = [
   "SHAHEED STHAL ( NEW BUS ADDA)",
   "HINDON RIVER",
   "ARTHALA",
@@ -287,6 +290,8 @@ class _AppState extends State<App> {
   // ignore: unused_field
   int _currentPageIndex = 0;
 
+  bool _notificationsEnabled = true;
+
   final List<Widget> _pages = [
     const Home(),
     const ClosestMetroPage(),
@@ -300,103 +305,173 @@ class _AppState extends State<App> {
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(20, 20, 20, 1),
       ),
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        key: _scaffoldKey,
-        extendBodyBehindAppBar: true,
-        drawer: const CustomDrawer(),
-        appBar: AppBar(
-          actions: [
-            PopupMenuButton<String>(
-              // ignore: prefer_const_constructors
-              color: Color.fromARGB(255, 28, 130, 173),
+      home: Builder(builder: (context) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: _scaffoldKey,
+          extendBodyBehindAppBar: true,
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  padding: EdgeInsets.zero,
+                  margin: EdgeInsets.zero,
+                  decoration: BoxDecoration(
+                    color: Colors.cyan,
+                  ),
+                  child: Image.asset(
+                    'assets/images/drawerHeader.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                ),
 
-              onSelected: (value) {
-                // Handle menu item selection
-              },
-              itemBuilder: (BuildContext context) {
-                return [
-                  const PopupMenuItem(
-                    value: 'Option 1',
-                    child: Text(
-                      'Option 1',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'Option 2',
-                    child: Text(
-                      'Option 2',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'Option 3',
-                    child: Text(
-                      'Option 3',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ];
-              },
-              icon: const Icon(Icons.more_vert_rounded,
-                  color: Color.fromARGB(255, 19, 0, 90)), // Add icon for button
-            )
-          ],
-          title: const Text(
-            "Metro Me",
-            style: TextStyle(
-              color: Color.fromARGB(255, 3, 201, 136),
+                ListTile(
+                  leading: const Icon(Icons.payment),
+                  title: const Text('Metro Card Recharge'),
+                  onTap: () {
+                    launchUrl(Uri.parse("https://www.dmrcsmartcard.com/"),
+                        mode: LaunchMode.externalApplication);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.contact_page),
+                  title: const Text('Contact Us'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ContactUsPage(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: const Text('About Us'),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AboutUsPage()));
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.report_problem),
+                  title: const Text('Service Status'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ServiceStatusPage()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(_notificationsEnabled
+                      ? Icons.notifications_active
+                      : Icons.notifications_off),
+                  title: const Text('Notifications'),
+                  onTap: () {
+                    setState(() {
+                      _notificationsEnabled = !_notificationsEnabled;
+                    });
+                  },
+                ),
+                // Add more options here
+              ],
             ),
           ),
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.menu,
-              color: Color.fromARGB(255, 19, 0, 90),
+          appBar: AppBar(
+            // actions: [
+            // PopupMenuButton<String>(
+            //   // ignore: prefer_const_constructors
+            //   color: Color.fromARGB(255, 28, 130, 173),
+            //   onSelected: (value) {
+            //     // Handle menu item selection
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return [
+            //       const PopupMenuItem(
+            //         value: 'Option 1',
+            //         child: Text(
+            //           'Option 1',
+            //           style: TextStyle(
+            //               color: Colors.white, fontWeight: FontWeight.bold),
+            //         ),
+            //       ),
+            //       const PopupMenuItem(
+            //         value: 'Option 2',
+            //         child: Text(
+            //           'Option 2',
+            //           style: TextStyle(
+            //               color: Colors.white, fontWeight: FontWeight.bold),
+            //         ),
+            //       ),
+            //       const PopupMenuItem(
+            //         value: 'Option 3',
+            //         child: Text(
+            //           'Option 3',
+            //           style: TextStyle(
+            //               color: Colors.white, fontWeight: FontWeight.bold),
+            //         ),
+            //       ),
+            //     ];
+            //   },
+            //   icon: const Icon(Icons.more_vert_rounded,
+            //       color:
+            //           Color.fromARGB(255, 19, 0, 90)), // Add icon for button
+            // )
+            // ],
+            title: const Text(
+              "Metro Me",
+              style: TextStyle(
+                color: Color.fromARGB(255, 3, 201, 136),
+              ),
             ),
-            onPressed: () {
-              _scaffoldKey.currentState?.openDrawer();
-            },
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Color.fromARGB(255, 19, 0, 90),
+              ),
+              onPressed: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+            ),
           ),
-        ),
-        body: Center(
-          child: SafeArea(
-              child: IndexedStack(
-            index: _currentPageIndex,
-            children: _pages,
-          )),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.pin_drop),
-              label: 'Closest Metro',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.update_sharp),
-              label: 'Metro Updates',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search_outlined),
-              label: 'Lost and Found',
-            ),
-          ],
-          currentIndex: _currentPageIndex,
-          selectedItemColor: const Color.fromARGB(255, 3, 201, 136),
-          backgroundColor: const Color.fromARGB(255, 28, 130, 173),
-          type: BottomNavigationBarType.fixed,
-          onTap: _onItemTapped,
-        ),
-      ),
+          body: Center(
+            child: SafeArea(
+                child: IndexedStack(
+              index: _currentPageIndex,
+              children: _pages,
+            )),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.pin_drop),
+                label: 'Closest Metro',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.update_sharp),
+                label: 'Metro Updates',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search_outlined),
+                label: 'Lost and Found',
+              ),
+            ],
+            currentIndex: _currentPageIndex,
+            selectedItemColor: const Color.fromARGB(255, 3, 201, 136),
+            backgroundColor: const Color.fromARGB(255, 28, 130, 173),
+            type: BottomNavigationBarType.fixed,
+            onTap: _onItemTapped,
+          ),
+        );
+      }),
     );
   }
 

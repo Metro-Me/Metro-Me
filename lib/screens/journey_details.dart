@@ -181,9 +181,11 @@ class _JourneyDetailsState extends State<JourneyDetails> {
               style: TextStyle(color: Colors.white, fontSize: 14.0),
             ),
             SizedBox(height: 8.0),
-            Text(
-              value,
-              style: TextStyle(fontSize: 15.0),
+            FittedBox(
+              child: Text(
+                value,
+                style: TextStyle(fontSize: 12.0),
+              ),
             ),
           ],
         ),

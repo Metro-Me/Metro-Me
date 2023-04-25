@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventsAndExperiences extends StatelessWidget {
   const EventsAndExperiences({Key? key}) : super(key: key);
@@ -13,17 +15,19 @@ class EventsAndExperiences extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: const [
             EventsAndExperiencesItems(
-              title: 'Working Parents',
-              description: 'Understanding of human behaviour',
-              lessonsCount: '13 Feb, Sunday ',
-              imagePath: 'assets/images/drawerHeader.jpg',
+              title: 'DELHI METRO MAP',
+              description: 'Overview of the Metro Network',
+              lessonsCount: '13 Feb, Sunday',
+              imagePath: 'assets/images/delhi_metro_map_banner.png',
+              url:
+                  "https://www.delhimetrorail.com/static/media/Network-Map-Final-Hindi-English.03b1a797.jpg",
             ),
             EventsAndExperiencesItems(
-              title: 'Working Parents',
-              description: 'Understanding of human behaviour',
-              lessonsCount: '13 Feb, Sunday',
-              imagePath: 'assets/images/drawerHeader.jpg',
-            ),
+                title: 'METRO CARD RECHARGE',
+                description: 'BE READY FOR YOUR JOURNEY',
+                lessonsCount: '13 Feb, Sunday',
+                imagePath: 'assets/images/card_recharge_banner.png',
+                url: "https://www.dmrcsmartcard.com/"),
           ],
         ),
       ),
@@ -38,12 +42,14 @@ class EventsAndExperiencesItems extends StatelessWidget {
     required this.description,
     required this.lessonsCount,
     required this.imagePath,
+    required this.url,
   }) : super(key: key);
 
   final String title;
   final String description;
   final String lessonsCount;
   final String imagePath;
+  final String url;
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +103,11 @@ class EventsAndExperiencesItems extends StatelessWidget {
                                   color: Colors.blue, width: 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18))),
-                          onPressed: () {},
-                          child: const Text('Book'),
+                          onPressed: () {
+                            launchUrl(Uri.parse(url),
+                                mode: LaunchMode.externalApplication);
+                          },
+                          child: const Text('Open'),
                         )
                       ],
                     )
@@ -107,6 +116,18 @@ class EventsAndExperiencesItems extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildZoomableImage() {
+    return Scaffold(
+      body: Container(
+        child: PhotoView(
+          imageProvider: AssetImage('assets/images/your_image.jpg'),
+          minScale: PhotoViewComputedScale.contained * 0.8,
+          maxScale: PhotoViewComputedScale.covered * 2,
         ),
       ),
     );

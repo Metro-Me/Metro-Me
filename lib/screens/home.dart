@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:metrome/compnents/home_tiles.dart';
 import 'package:textfield_search/textfield_search.dart';
 import 'package:flutter/material.dart';
 import 'journey_details.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -280,6 +283,28 @@ class _HomeState extends State<Home> {
     "PHASE-3"
   ];
 
+  Future<bool> sendJourneyDetails(
+      String sourceStation, String destStation) async {
+    const String firebaseUrl =
+        'https://metro-me-c9587-default-rtdb.firebaseio.com/journeys.json';
+    final DateTime createdAt = DateTime.now();
+
+    Map<String, dynamic> journeyData = {
+      'source_station': sourceStation,
+      'destination_station': destStation,
+      'created_at': createdAt.toIso8601String(),
+    };
+
+    http.Response response =
+        await http.post(Uri.parse(firebaseUrl), body: jsonEncode(journeyData));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // ignore: unused_field
   String? _selectedDestStation;
   // ignore: unused_field
@@ -359,11 +384,15 @@ class _HomeState extends State<Home> {
             height:
                 20), // Add some spacing between the text fields and the button
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (_sourceStationController.text.isNotEmpty &&
                 _destinationStationController.text.isNotEmpty &&
                 _sourceStationController.text !=
                     _destinationStationController.text) {
+              bool success = await sendJourneyDetails(
+                  _sourceStationController.text,
+                  _destinationStationController.text);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
